@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
-	<title>Quick Start - Leaflet</title>
-
+	<title>Treaties Map</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-
-    <script src="gz_2010_us_040_00_20m.js"></script>
-	
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <link rel="stylesheet" href="style.css">    
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <script src="USAlbers.geojson"></script>
 </head>
 <body>
-
-<div id="map" style="width: 800px; height: 600px;"></div>
+  <div class="container">
+    <div class="map-container">
+      <div class="map-frame">  
+        <div id="map-id"></div>
+      </div>
+    </div>
+  </div>
+</body>
 <script>
-    var states = {"Alabama":"https://treaties.okstate.edu/locations-by-state/alabama","Alaska":"https://treaties.okstate.edu/locations-by-state/alaska","Arizona":"https://treaties.okstate.edu/locations-by-state/arizona","Arkansas":"https://treaties.okstate.edu/locations-by-state/arkansas","California":"https://treaties.okstate.edu/locations-by-state/california","Colorado":"https://treaties.okstate.edu/locations-by-state/colorado","Connecticut":"https://treaties.okstate.edu/locations-by-state/connecticut","Delaware":"https://treaties.okstate.edu/locations-by-state/delaware","District of Columbia":"https://treaties.okstate.edu/locations-by-state/district-of-columbia","Florida":"https://treaties.okstate.edu/locations-by-state/florida","Georgia":"https://treaties.okstate.edu/locations-by-state/georgia","Hawaii":"https://treaties.okstate.edu/locations-by-state/hawaii","Idaho":"https://treaties.okstate.edu/locations-by-state/idaho","Illinois":"https://treaties.okstate.edu/locations-by-state/illinois","Indiana":"https://treaties.okstate.edu/locations-by-state/indiana","Iowa":"https://treaties.okstate.edu/locations-by-state/iowa","Kansas":"https://treaties.okstate.edu/locations-by-state/kansas","Kentucky":"https://treaties.okstate.edu/locations-by-state/kentucky","Louisiana":"https://treaties.okstate.edu/locations-by-state/louisiana","Maine":"https://treaties.okstate.edu/locations-by-state/maine","Maryland":"https://treaties.okstate.edu/locations-by-state/maryland","Massachusetts":"https://treaties.okstate.edu/locations-by-state/massachusetts","Michigan":"https://treaties.okstate.edu/locations-by-state/michigan","Minnesota":"https://treaties.okstate.edu/locations-by-state/minnesota","Mississippi":"https://treaties.okstate.edu/locations-by-state/mississippi","Mississippi (territory)":"https://treaties.okstate.edu/locations-by-state/mississippi-territory","Missouri":"https://treaties.okstate.edu/locations-by-state/missouri","Montana":"https://treaties.okstate.edu/locations-by-state/montana","Nebraska":"https://treaties.okstate.edu/locations-by-state/nebraska","Nevada":"https://treaties.okstate.edu/locations-by-state/nevada","New Hampshire":"https://treaties.okstate.edu/locations-by-state/new-hampshire","New Jersey":"https://treaties.okstate.edu/locations-by-state/new-jersey","New Mexico":"https://treaties.okstate.edu/locations-by-state/new-mexico","New York":"https://treaties.okstate.edu/locations-by-state/new-york","North Carolina":"https://treaties.okstate.edu/locations-by-state/north-carolina","North Dakota":"https://treaties.okstate.edu/locations-by-state/north-dakota","Ohio":"https://treaties.okstate.edu/locations-by-state/ohio","Oklahoma":"https://treaties.okstate.edu/locations-by-state/oklahoma","Oregon":"https://treaties.okstate.edu/locations-by-state/oregon","Pennsylvania":"https://treaties.okstate.edu/locations-by-state/pennsylvania","Rhode Island":"https://treaties.okstate.edu/locations-by-state/rhode-island","South Carolina":"https://treaties.okstate.edu/locations-by-state/south-carolina","South Dakota":"https://treaties.okstate.edu/locations-by-state/south-dakota","Tennessee":"https://treaties.okstate.edu/locations-by-state/tennessee","Texas":"https://treaties.okstate.edu/locations-by-state/texas","Utah":"https://treaties.okstate.edu/locations-by-state/utah","Vermont":"https://treaties.okstate.edu/locations-by-state/vermont","Virginia":"https://treaties.okstate.edu/locations-by-state/virginia","Washington":"https://treaties.okstate.edu/locations-by-state/washington","West Virginia":"https://treaties.okstate.edu/locations-by-state/west-virginia","Wisconsin":"https://treaties.okstate.edu/locations-by-state/wisconsin","Wyoming":"https://treaties.okstate.edu/locations-by-state/wyoming"}
- var map = L.map("map").setView([40.3949,-100.1240], 4);
-
+var states = {"Alabama":"https://treaties.okstate.edu/locations-by-state/alabama","Alaska":"https://treaties.okstate.edu/locations-by-state/alaska","Arizona":"https://treaties.okstate.edu/locations-by-state/arizona","Arkansas":"https://treaties.okstate.edu/locations-by-state/arkansas","California":"https://treaties.okstate.edu/locations-by-state/california","Colorado":"https://treaties.okstate.edu/locations-by-state/colorado","Connecticut":"https://treaties.okstate.edu/locations-by-state/connecticut","Delaware":"https://treaties.okstate.edu/locations-by-state/delaware","District of Columbia":"https://treaties.okstate.edu/locations-by-state/district-of-columbia","Florida":"https://treaties.okstate.edu/locations-by-state/florida","Georgia":"https://treaties.okstate.edu/locations-by-state/georgia","Hawaii":"https://treaties.okstate.edu/locations-by-state/hawaii","Idaho":"https://treaties.okstate.edu/locations-by-state/idaho","Illinois":"https://treaties.okstate.edu/locations-by-state/illinois","Indiana":"https://treaties.okstate.edu/locations-by-state/indiana","Iowa":"https://treaties.okstate.edu/locations-by-state/iowa","Kansas":"https://treaties.okstate.edu/locations-by-state/kansas","Kentucky":"https://treaties.okstate.edu/locations-by-state/kentucky","Louisiana":"https://treaties.okstate.edu/locations-by-state/louisiana","Maine":"https://treaties.okstate.edu/locations-by-state/maine","Maryland":"https://treaties.okstate.edu/locations-by-state/maryland","Massachusetts":"https://treaties.okstate.edu/locations-by-state/massachusetts","Michigan":"https://treaties.okstate.edu/locations-by-state/michigan","Minnesota":"https://treaties.okstate.edu/locations-by-state/minnesota","Mississippi":"https://treaties.okstate.edu/locations-by-state/mississippi","Mississippi (territory)":"https://treaties.okstate.edu/locations-by-state/mississippi-territory","Missouri":"https://treaties.okstate.edu/locations-by-state/missouri","Montana":"https://treaties.okstate.edu/locations-by-state/montana","Nebraska":"https://treaties.okstate.edu/locations-by-state/nebraska","Nevada":"https://treaties.okstate.edu/locations-by-state/nevada","New Hampshire":"https://treaties.okstate.edu/locations-by-state/new-hampshire","New Jersey":"https://treaties.okstate.edu/locations-by-state/new-jersey","New Mexico":"https://treaties.okstate.edu/locations-by-state/new-mexico","New York":"https://treaties.okstate.edu/locations-by-state/new-york","North Carolina":"https://treaties.okstate.edu/locations-by-state/north-carolina","North Dakota":"https://treaties.okstate.edu/locations-by-state/north-dakota","Ohio":"https://treaties.okstate.edu/locations-by-state/ohio","Oklahoma":"https://treaties.okstate.edu/locations-by-state/oklahoma","Oregon":"https://treaties.okstate.edu/locations-by-state/oregon","Pennsylvania":"https://treaties.okstate.edu/locations-by-state/pennsylvania","Rhode Island":"https://treaties.okstate.edu/locations-by-state/rhode-island","South Carolina":"https://treaties.okstate.edu/locations-by-state/south-carolina","South Dakota":"https://treaties.okstate.edu/locations-by-state/south-dakota","Tennessee":"https://treaties.okstate.edu/locations-by-state/tennessee","Texas":"https://treaties.okstate.edu/locations-by-state/texas","Utah":"https://treaties.okstate.edu/locations-by-state/utah","Vermont":"https://treaties.okstate.edu/locations-by-state/vermont","Virginia":"https://treaties.okstate.edu/locations-by-state/virginia","Washington":"https://treaties.okstate.edu/locations-by-state/washington","West Virginia":"https://treaties.okstate.edu/locations-by-state/west-virginia","Wisconsin":"https://treaties.okstate.edu/locations-by-state/wisconsin","Wyoming":"https://treaties.okstate.edu/locations-by-state/wyoming"}
+var map = L.map("map-id", {preferCanvas: true }).setView([0,0], 4);
 var geojsonStyle = {
-  fillColor:"tomato",
-  color: "#000",
-  weight: 1,
+  color: null,
+  weight: null,
   opacity: 1,
-  fillOpacity: 0.7,
+  fillOpacity: null,
+  stroke:false,
+  weight:2
 };
-
 var options = {
   maxZoom: 20,
   style: geojsonStyle,
@@ -47,25 +47,20 @@ var options = {
         layer.on({
             mouseover: function () {
                 this.setStyle({
-                    'fillColor': '#ff0000'
-                })
+                    stroke:true                })
             }
         });
         layer.on({
             mouseout: function () {
                 this.setStyle({
-                    'fillColor': 'tomato'
+                    stroke: false
                 })
             }
         });
-  }  
+    }  
 };
 var layer = L.geoJson(data, options).addTo(map);
-
-
+new L.TileLayer("https://api.mapbox.com/styles/v1/krdyke/ckvmg9iun0kpe14oa5x2zakqd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia3JkeWtlIiwiYSI6Ik15RGcwZGMifQ.IR_NpAqXL1ro8mFeTIdifg").addTo(map);
 </script>
-
-
-
 </body>
 </html>
